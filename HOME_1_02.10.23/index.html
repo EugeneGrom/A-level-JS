@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="normalize.css" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form>
+        <fieldset>
+            <legend>Form</legend>
+            <div class="block">
+                <label for="login">Логін</label><input type='text' id="login" placeholder="Введіть логін" required/>
+            </div>
+            <div class="block">
+                <label for="pass">Пароль</label><input type='password' id="pass" placeholder="Введіть пароль" required/>
+            </div>
+            <div>
+                <input type="button" id="btn" value="LOGIN">
+            </div>
+        </fieldset>
+    </form>
+    <div id="command">
+        <span>Good!</span>    
+    </div>
+    <script src="main.js"></script>
+    <script>
+        var login = document.querySelector('login');
+        var pass = document.querySelector('pass');
+
+    </script>
+</body>
+
+</html>

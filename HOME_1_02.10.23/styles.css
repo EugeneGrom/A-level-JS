@@ -1,0 +1,45 @@
+body {
+    margin-left: 15px;
+}
+
+fieldset,
+#command {
+    width: 450px;
+    position: relative;
+    padding: 20px 10px;
+    border: 2px solid grey;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.block,
+#btn {
+    margin: 20px;
+    height: 20px;
+}
+
+.block input {
+    position: absolute;
+    right: calc(50% - 50px);
+    border: 1px solid darkgray;
+}
+
+#btn {
+    height: 40px;
+    width: 80px;
+    border-radius: 15px;
+    border: 2px solid grey;
+    cursor: pointer;
+    transition: all 0.5 linear;
+}
+#btn:hover {
+    background: darkblue;
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+#command {
+    display: none;
+    background: green;
+    color: white;
+}
