@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let str = prompt('Скопіюйте посилання на відео, починаючи з http :');
+        const regExpYoutube = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/
+        let regExpe = str.match(regExpYoutube);
+        let id = regExpe[1];
+    </script>
+</head>
+
+<body>
+    <!--String: youtube-->
+    <script>
+        document.write(`
+            <embed 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/${id}" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen="">
+            </embed>
+        `);
+    </script>
+</body>
+
+</html>
