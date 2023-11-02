@@ -239,9 +239,9 @@ console.log(idInput2);
             for (let i = 0; i < keys.length; i++) {
                 let item = [keys[i]];
                 for (let j = 1; j <= keys.length; j++) {
-                    let res = (values[i]/values[j-1]).toFixed(6);
-                    if ((values[i] % values[j-1]) === 0) {
-                        res = (values[i]/values[j-1]).toFixed(0);
+                    let res = (values[i] / values[j - 1]).toFixed(6);
+                    if ((values[i] % values[j - 1]) === 0) {
+                        res = (values[i] / values[j - 1]).toFixed(0);
                     }
                     item.push(res);
                 };
@@ -258,7 +258,7 @@ console.log(idInput2);
             for (let j = 0; j < arrays.length; j++) {
                 str += `<tr>`;
                 for (let k = 0; k < arrays[j].length; k++) {
-                    (k === 0) 
+                    (k === 0)
                         ? str += `<td style='border: 1px solid black; padding: 10px; font-weight: bold;'>${arrays[j][k]}</td>`
                         : str += `<td style='border: 1px solid black; padding: 10px;'>${arrays[j][k]}</td>`;
                 }
@@ -270,6 +270,34 @@ console.log(idInput2);
             console.log(data) // Вивчіть структуру, що отримується з сервера в консолі
         })
 }
+
+//Form
+{
+    const car = {
+        "Name": "chevrolet chevelle malibu",
+        "Cylinders": 8,
+        "Displacement": 307,
+        "Horsepower": 130,
+        "Weight_in_lbs": 3504,
+        "Origin": "USA",
+        "in_production": false
+    }
+
+    let form = `<form>`;
+    for (const props in car) {
+        form += `<label>${props}: <input type="${typeof car[props]}" value="${car[props]}"/></label> <br /><br />`
+
+        if (car[props] === true) {
+            form = form.replace(`<input type="${typeof car[props]}"`, `<input type="checkbox" checked`);
+        } else if (car[props] === false) {
+            form = form.replace(`<input type="${typeof car[props]}"`, `<input type="checkbox"`);
+        }
+    }
+    form += `</form>`;
+
+    document.write(form);
+}
+
 
 //Table
 {
