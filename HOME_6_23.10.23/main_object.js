@@ -212,10 +212,8 @@ console.log(idInput2);
 
             const cross = (1 / a1) / (1 / b1);
 
-            // if (typeof c === 'number' && !isNaN(c)) {
             let result = (c * cross);
             console.log(`Вітаємо! Ви придбали ${result.toFixed(2)} ${b} за ${c.toFixed(2)} ${a}!`)
-            // } else { console.log('Помилка 3') };
             console.log(data); // Вивчіть структуру, що отримується з сервера в консолі
 
             //Currency drop down
@@ -225,6 +223,52 @@ console.log(idInput2);
             str += "</select>"
             document.write(str) //document.write відобразить ваш HTML на сторінці
         });
+}
+
+//Currency table
+{
+    fetch('https://open.er-api.com/v6/latest/USD')
+        .then(res => res.json())
+        .then(data => {
+            let keys = Object.keys(data.rates);
+            let values = Object.values(data.rates);
+            let arr = ['', ...keys];
+            console.log(values);
+
+            let arrays = [];
+            for (let i = 0; i < keys.length; i++) {
+                let item = [keys[i]];
+                for (let j = 1; j <= keys.length; j++) {
+                    let res = (values[i]/values[j-1]).toFixed(6);
+                    if ((values[i] % values[j-1]) === 0) {
+                        res = (values[i]/values[j-1]).toFixed(0);
+                    }
+                    item.push(res);
+                };
+                arrays.push(item);
+            }
+
+            let str = `<table style='border-collapse: collapse;'>`;
+            str += `<tr>`;
+            for (let i = 0; i < arr.length; i++) {
+                str += `<th style='border: 1px solid black; padding: 10px; background-color: lightgrey; font-weight: bold;'>${arr[i]}</th>`;
+            }
+            str += `</tr>`;
+            str += `<tr>`;
+            for (let j = 0; j < arrays.length; j++) {
+                str += `<tr>`;
+                for (let k = 0; k < arrays[j].length; k++) {
+                    (k === 0) 
+                        ? str += `<td style='border: 1px solid black; padding: 10px; font-weight: bold;'>${arrays[j][k]}</td>`
+                        : str += `<td style='border: 1px solid black; padding: 10px;'>${arrays[j][k]}</td>`;
+                }
+                str += `</tr>`;
+            }
+            str += `</tr></table>`;
+            document.write(str);
+
+            console.log(data) // Вивчіть структуру, що отримується з сервера в консолі
+        })
 }
 
 //Table
@@ -248,26 +292,129 @@ console.log(idInput2);
             surname: 'Іванов',
             married: true
         },
-    ]
+    ];
     //Перший прохід - пошук колонок
     const columnArr = [];
     for (const pers of persons) {
         for (const key in pers) {
             if (!(columnArr.includes(key))) {
-                columnArr.push(key)
+                columnArr.push(key);
             };
         }
     }
+
+    const persArrays = [];
+
+    for (const pers of persons) {
+        const persArray = [];
+        for (const key of columnArr) {
+            persArray.push(pers[key] || ' ');
+        }
+        persArrays.push(persArray);
+    }
+    console.log(persArrays);
+
     //Заголовок
     let str = `<table style='border-collapse: collapse;'>`;
     str += `<tr>`;
     for (let i = 0; i < columnArr.length; i++) {
         str += `<th style='border: 1px solid black; padding: 10px; background-color: lightgrey; font-weight: bold;'>${columnArr[i]}</th>`;
     }
-    str += `</tr></table>`;
+    str += `</tr>`;
+
+    for (const person of persArrays) {
+        str += `<tr>`;
+        for (const item of person) {
+            str += `<td style='border: 1px solid black; padding: 10px; text-align: center;'>${item}</td>`
+        }
+        str += `</tr>`;
+    }
+
+    str += `</table>`;
     document.write(str);
 }
 
+//Тестові дані
+{
+    const cars = [
+        {
+            "Name": "chevrolet chevelle malibu",
+            "Cylinders": 8,
+            "Displacement": 307,
+            "Horsepower": 130,
+            "Weight_in_lbs": 3504,
+            "Origin": "USA"
+        },
+        {
+            "Name": "buick skylark 320",
+            "Miles_per_Gallon": 15,
+            "Cylinders": 8,
+            "Displacement": 350,
+            "Horsepower": 165,
+            "Weight_in_lbs": 3693,
+            "Acceleration": 11.5,
+            "Year": "1970-01-01",
+        },
+        {
+            "Miles_per_Gallon": 18,
+            "Cylinders": 8,
+            "Displacement": 318,
+            "Horsepower": 150,
+            "Weight_in_lbs": 3436,
+            "Year": "1970-01-01",
+            "Origin": "USA"
+        },
+        {
+            "Name": "amc rebel sst",
+            "Miles_per_Gallon": 16,
+            "Cylinders": 8,
+            "Displacement": 304,
+            "Horsepower": 150,
+            "Year": "1970-01-01",
+            "Origin": "USA"
+        },
+    ];
+
+    //Перший прохід - пошук колонок
+    const columnArr = [];
+    for (const car of cars) {
+        for (const key in car) {
+            if (!(columnArr.includes(key))) {
+                columnArr.push(key);
+            };
+        }
+    }
+
+    const carArrays = [];
+
+    for (const car of cars) {
+        const carArray = [];
+        for (const key of columnArr) {
+            carArray.push(car[key] || ' ');
+        }
+        carArrays.push(carArray);
+    }
+    console.log(carArrays);
+
+    //Заголовок
+    let str = `<table style='border-collapse: collapse;'>`;
+    str += `<tr>`;
+    for (let i = 0; i < columnArr.length; i++) {
+        str += `<th style='border: 1px solid black; padding: 10px; background-color: lightgrey; font-weight: bold;'>${columnArr[i]}</th>`;
+    }
+    str += `</tr>`;
+
+    for (const car of carArrays) {
+        str += `<tr>`;
+        for (const item of car) {
+            str += `<td style='border: 1px solid black; padding: 10px; text-align: center;'>${item}</td>`
+        }
+        str += `</tr>`;
+    }
+
+    str += `</table>`;
+    document.write(str);
+}
 
 
 
