@@ -104,7 +104,7 @@ const newTable = [];
 //Deep Copy
 {
     const newTable2 = structuredClone(table);
-    newTable2[2][2][1] = 100500;
+    newTable2[2][2] = 100500;
     console.log(table, newTable2);
 }
 //Array Equals
@@ -122,24 +122,26 @@ const newTable = [];
 
 //Destruct
 {
-    let [first, fifth, ninth] = [1, 5, 9];
+    // let [first, fifth, ninth] = [1, 5, 9];
     let text = prompt('Введіть рядок більше 9 символів');
     (text.length < 9)
         ? alert('Ви ввели менше 9 символів')
-        : alert([first, fifth, ninth] = [text[first - 1], text[fifth - 1], text[ninth - 1]]);
+        : [first, ,,, fifth, ,,, ninth, ...rest] = text; alert([first, fifth, ninth]);
+        // : alert([first, fifth, ninth] = [text[first - 1], text[fifth - 1], text[ninth - 1]]);
 }
 
 //Destruct default
 {
     let text = prompt('Введіть рядок');
-    let textArray = [text[1], text[3], text[4]];
-    let newTextArray = [];
+    // let textArray = [text[1], text[3], text[4]];
+    let [ ,second, , fourth, fifth] = text;
+    let newTextArray = [second, fourth, fifth];
 
     let i = 0;
-    for (const elem of textArray) {
+    for (const elem of newTextArray) {
         (elem === ' ' || elem === undefined)
             ? newTextArray[i] = '!'
-            : newTextArray[i] = elem;
+            : elem;
         i++
     }
     alert(newTextArray);
@@ -198,11 +200,11 @@ const newTable = [];
 //For Table Horizontal
 {
     const names = ["John", "Paul", "George", "Ringo"]
-    let str = "<table style='border-collapse: collapse;'>"
+    let str = "<table style='border-collapse: collapse;'><tr>"
     for (const name of names) {
         str += `<td style='border: 1px solid black; padding: 10px;'> ${name} </td>`;
     }
-    str += "</table>"
+    str += "</tr></table>"
     document.write(str) //document.write отобразит ваш HTML на странице
 }
 
@@ -211,13 +213,7 @@ const newTable = [];
     const names = ["John", "Paul", "George", "Ringo"]
     let str = "<table style='border-collapse: collapse;'>"
     for (const name of names) {
-        if (names.indexOf(name === 0)) {
-            str += "<tr>";
-        }
-        str += `<td style='border: 1px solid black; padding: 10px; text-align: center;'> ${name} </td>`;
-        // if (names.indexOf(name === names.length-1)) {
-        //     str += "</tr>";
-        // }
+        str += `<tr><td style='border: 1px solid black; padding: 10px; text-align: center;'> ${name} </td></tr>`;
     }
     str += "</table>"
     document.write(str) //document.write отобразит ваш HTML на странице
@@ -284,7 +280,6 @@ const newTable = [];
 {
     const capitalize = str => {
         let result
-        str = "cANBerRa";
         let firstLetter = str.charAt(0);
         result = firstLetter.toUpperCase() + str.slice(1).toLowerCase();
         return result //саме цей код забезпечить повернення результату функції
@@ -333,7 +328,7 @@ const newTable = [];
 {
     const currencies = ["USD", "EUR", "GBP", "UAH"]
     let str = "<select>"
-    str += currencies.reduce((a, b) => `-- ${a} --<option>-- ${b} --</option>`, '');
+    str += currencies.reduce((a, b) => `${a}<option>-- ${b} --</option>`, '');
     str += "</select>"
     document.write(str) //document.write відобразить ваш HTML на сторінці
 }
