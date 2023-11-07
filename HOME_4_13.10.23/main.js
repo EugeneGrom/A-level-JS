@@ -32,14 +32,14 @@ if (+whatTaskIs === 3 || whatTaskIs === 'boolean' || whatTaskIs.includes('if'))
 //Boolean, //Boolean: if
 {
     let age = confirm('Вам за 30 років?');
-    if (age === true) {
+    if (age) {
         alert('Вам більше 30 років');
     } else {
         alert('Вам 30 або менше років');
     }
 
     let sex = confirm('Ви чоловік?');
-    if (sex === true) {
+    if (sex) {
         alert('Ви таки чоловік');
     } else {
         alert('Ви таки жінка');
@@ -164,9 +164,9 @@ if (+whatTaskIs === 9 || whatTaskIs === 'confirm' || whatTaskIs.includes('if')) 
 if (+whatTaskIs === 10 || whatTaskIs === 'default' || whatTaskIs.includes('or')) {
     //Default: or
     {
-        let surname = (prompt('Введіть прізвище')) || ('Іваненко');
-        let name = (prompt('Введіть ім\'я')) || ('Петро');
-        let middleName = (prompt('Введіть по-батькові')) || ('Юхимович');
+        let surname = prompt('Введіть прізвище') || 'Іваненко';
+        let name = prompt('Введіть ім\'я') || 'Петро';
+        let middleName = prompt('Введіть по-батькові') || 'Юхимович';
 
         alert(`${surname} ${name} ${middleName}`);
     }
@@ -194,8 +194,8 @@ if (+whatTaskIs === 11 || whatTaskIs === 'default' || whatTaskIs.includes('if'))
 if (+whatTaskIs === 12 || whatTaskIs.includes('login') || whatTaskIs.includes('pass')) {
     //Login and password
     {
-        let login = 'admin';
-        let pass = 'qwerty';
+        const login = 'admin';
+        const pass = 'qwerty';
 
         let inputLogin = prompt('Введіть Ваш логін:');
         if (inputLogin === login) {
@@ -225,15 +225,17 @@ if (+whatTaskIs === 13 || whatTaskIs.includes('curr') || whatTaskIs.includes('ex
 
         let value = function (currency) {
             if (currency === 'usd') {
-                return (currency = usd);
+                return usd;
             } else if (currency === 'eur') {
-                return (currency = eur);
+                return eur;
             } else if (currency === 'gbp') {
-                return (currency = gbp);
+                return gbp;
             } else if (currency === 'pln') {
-                return (currency = pln);
+                return pln;
             } else if (currency === 'cad') {
-                return (currency = cad);
+                return cad;
+            } else if (currency === 'uah') {
+                return uah;
             } else {
                 alert('Ви ввели невірне значення');
             }
@@ -243,7 +245,7 @@ if (+whatTaskIs === 13 || whatTaskIs.includes('curr') || whatTaskIs.includes('ex
         let result;
 
         let confirmed = confirm('Якщо Ви бажаєте купити валюту, натисніть ОК, а якщо продати - Cancel:');
-        if (confirmed === true) {
+        if (confirmed) {
             let count = prompt(`Введіть кількість грн., за яку ви хочете купити ${curr1}:`);
             if ((count !== '') || (count !== null)) {
                 result = (+count / rate).toFixed(2);
@@ -310,9 +312,14 @@ if (+whatTaskIs === 15 || whatTaskIs.includes('завд') || whatTaskIs.includes
         let yV = prompt('Введіть "камінь", "ножиці" або "папір"').toLowerCase();
         let cV = Math.random();
         alert(cV);
-        (yV === 'камінь') && ((cV <= 0.33 && alert('Нічия')) || (cV > 0.33 && cV <= 0.66 && alert('Виграш!')) || (cV >= 0.66 && alert('Програш!'))) ||
-        (yV === 'ножиці') && ((cV <= 0.33 && alert('Програш!')) || (cV > 0.33 && cV <= 0.66 && alert('Нічия')) || (cV >= 0.66 && alert('Виграш!'))) ||
-        (yV === 'папір') && ((cV <= 0.33 && alert('Виграш!')) || (cV > 0.33 && cV <= 0.66 && alert('Програш!')) || (cV >= 0.66 && alert('Нічия')));
+
+        if ((yV === 'камінь' && cV <= 0.33) || (yV === 'ножиці' && cV > 0.33 && cV <= 0.66) || (yV === 'папір' && cV > 0.66)) alert('Нічия')
+        else if ((yV === 'камінь' && cV > 0.33 && cV <= 0.66) || (yV === 'ножиці' && cV > 0.66) || (yV === 'папір' && cV <= 0.33)) alert('Виграш')
+        else alert('Програш')
+
+        // (yV === 'камінь') && ((cV <= 0.33 && alert('Нічия')) || (cV > 0.33 && cV <= 0.66 && alert('Виграш!')) || (cV >= 0.66 && alert('Програш!'))) ||
+        // (yV === 'ножиці') && ((cV <= 0.33 && alert('Програш!')) || (cV > 0.33 && cV <= 0.66 && alert('Нічия')) || (cV >= 0.66 && alert('Виграш!'))) ||
+        // (yV === 'папір') && ((cV <= 0.33 && alert('Виграш!')) || (cV > 0.33 && cV <= 0.66 && alert('Програш!')) || (cV >= 0.66 && alert('Нічия')));
     }
 }
 
