@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-level Module JS Homework 7 - Function</title>
+    <style>
+        .long {
+            width: 250px;
+            margin-bottom: 5px;
+        }
+
+        form input::placeholder {
+            color: red;
+        }
+
+        #internet {
+            width: 424px;
+        }
+
+        .text-red {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        .text-green {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <input type='number' id="firstNumber" />
+    <input type='number' id="secondNumber" />
+    <div id="divisionResult">
+        текст у div
+    </div>
+    <br />
+    <form>
+        <input type="number" id="gas" placeholder="Газ за місяць, кубів">
+        <input type="number" class="long" id="gasRate" placeholder="Тариф на газ, грн./м3"><br />
+        <input type="number" id="electric" placeholder="Електроенергія, кВт">
+        <input type="number" class="long" id="electricRate" placeholder="Тариф на електроенергію, грн./кВт"><br />
+        <input type="number" id="internet" placeholder="Тариф на домашній інтернет, грн."><br />
+        <input type="number" id="water" placeholder="Холодна вода, кубів">
+        <input type="number" class="long" id="waterRate" placeholder="Тариф на холодну воду, грн./м3"><br />
+        <div id="publicResult">
+            якийсь результат
+        </div>
+    </form>
+
+
+</body>
+<script>
+    //Divide
+    const calcResult = () => {
+        let result = Math.floor(firstNumber.value / secondNumber.value);
+        console.log(firstNumber.value, secondNumber.value, divisionResult.innerHTML);
+        (result < 0 || secondNumber.value < 0)
+            ? divisionResult.innerHTML = `Результат поділу <strong>${firstNumber.value}</strong> на <strong>${secondNumber.value}</strong> націло неможливе: Ви маєте від'ємний числівник або знаменник<br/>`
+            : divisionResult.innerHTML = `Результат поділу <strong>${firstNumber.value}</strong> на <strong>${secondNumber.value}</strong> націло становить:<br/>` + result;
+    }
+
+    firstNumber.oninput = secondNumber.oninput = calcResult
+
+    //Calc Live
+    const publicService = function () {
+        let [g1, g2, el1, el2, int, wat1, wat2] = [
+            +gas.value,
+            +gasRate.value,
+            +electric.value,
+            +electricRate.value,
+            +internet.value,
+            +water.value,
+            +waterRate.value
+        ]
+        let [gasTotal, electricityTotal, internetRate, waterTotal] = [
+            g1 * g2,
+            el1 * el2,
+            int,
+            wat1 * wat2
+        ]
+
+        let total = gasTotal + electricityTotal + internetRate + waterTotal;
+        const negativeNum = (element) => element < 0;
+
+        if ([g1, g2, el1, el2, int, wat1, wat2].some(negativeNum)) {
+            publicResult.innerHTML = `На жаль , Ви десь ввели негативне значення, перевірте та спробуйте ще...`;
+            publicResult.classList.add('text-red');
+            publicResult.classList.remove('text-green');
+        } else {
+            publicResult.innerHTML = `Ваші місячні витрати за комунальні послуги складають: ${total} грн.`;
+            publicResult.classList.add('text-green');
+            publicResult.classList.remove('text-red');
+        }
+    }
+
+    gas.oninput = gasRate.oninput = electric.oninput = electricRate.oninput = internet.oninput = water.oninput = waterRate.oninput = publicService;
+</script>
+
+</html>
