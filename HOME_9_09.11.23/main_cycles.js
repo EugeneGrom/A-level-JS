@@ -132,7 +132,7 @@
 //multiply table
 {
     let [one, two] = [
-        prompt('перший множувач таблиці множення:'), 
+        prompt('перший множувач таблиці множення:'),
         prompt('другий множувач таблиці множення:')
     ]
     const arr = [];
@@ -146,14 +146,68 @@
     alert(arr[one][two]); // ??
 }
 
+//read array of objects
+{
+    const arr = [];
+
+    const readArrayOfObjects = function (array) {
+        
+        let conf = confirm("Ви хочете вводити новий об'єкт масиву?");
+        for (let i = 0; conf; i++) {
+            let obj = {};
+            let key, value;
+
+            do {
+                key = prompt('Введіть ключ');
+                if (key !== null) {
+                    value = prompt('Введіть значення');
+                    if (value !== null) {
+                        obj[key] = value;
+                    } else {
+                        obj[key] = null;
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            } while (key !== null || value !== null);
+
+            array[i] = obj;
+            console.log(obj);
+
+            conf = confirm("Ви хочете вводити новий об'єкт масиву?");
+        }
+        console.log(array);
+    }
+    readArrayOfObjects(arr);
+}
+
 //Ромбік
 {
     let picture = '';
     let size = {
-        width: prompt('довжина візерунку'),
-        height: prompt('висота візерунку')
+        width: +prompt('довжина візерунку'),
+        height: +prompt('висота візерунку')
     }
-    for (let i = 0; i < size.height; i++) {
+    let [halfWidth, halfHeight] = [
+        Math.floor(size.width / 2),
+        Math.floor(size.height / 2)
+    ]
 
+    let k = 0;
+    for (let i = 0; i < size.height; i++) {
+        for (let j = 0; j < size.width; j++) {
+            (j < halfWidth - k || j > halfWidth + k)
+                ? picture += '.'
+                : picture += '#';
+        }
+        picture += '\n';
+        (i < halfHeight)
+            ? k += 1
+            : k -= 1;
     }
+    console.log(picture);
 }
+
+
+
