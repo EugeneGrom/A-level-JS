@@ -95,23 +95,43 @@
 
 //chess
 {
-    let [width, height] = [prompt('довжина дошки'), prompt('висота дошки')];
-
+    let [width, height] = [+prompt('довжина дошки'), +prompt('висота дошки')];
     let chess = '';
+
     for (let i = 0; i < height; i++) {
-        let j = 0;
-        while (j < width) {
-            chess += '.#';
-            j += 2;
-            if (width - j === 1) {
-                chess += '.';
-                break;
-            }
+        for (let j = 0; j < width; j++) {
+            ((i + j) % 2 === 0)
+                ? chess += '.'
+                : chess += '#';
         }
         chess += '\n';
     }
     console.log(chess);
 }
+
+//Вариант чередования в одном ряду, без изменения последовательности в следующем:
+// {
+//     let [width, height] = [+prompt('довжина дошки'), +prompt('висота дошки')];
+
+//     let chess = '';
+//     for (let i = 0; i < height; i++) {
+//         let j = 0;
+//         if (width !== 1) {
+//             while (j < width && width - j > 1) {
+//                 chess += '.#';
+//                 j += 2;
+//                 if (width - j === 1) {
+//                     chess += '.';
+//                     break;
+//                 }
+//             }
+//         } else {
+//             chess += '.';
+//         }
+//         chess += '\n';
+//     }
+//     console.log(chess);
+// }
 
 //cubes
 //Сформуйте масив з N(вводиться користувачем за допомогою prompt) елементів , 
@@ -151,7 +171,7 @@
     const arr = [];
 
     const readArrayOfObjects = function (array) {
-        
+
         let conf = confirm("Ви хочете вводити новий об'єкт масиву?");
         for (let i = 0; conf; i++) {
             let obj = {};
@@ -209,5 +229,102 @@
     console.log(picture);
 }
 
+//DOM: multiply table
+//DOM: highlight cell
+{
+    const table = document.createElement('table');
+    for (let i = 0; i < 10; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < 10; j++) {
+            const cell = document.createElement('td');
+            cell.style.cssText = `
+                border: 1px solid grey; 
+                width: 50px; height: 50px; 
+                text-align: center; font-size: 20px; 
+                transition: background-color 0.4s ease-in`;
+            (i % 2)
+                ? cell.style.backgroundColor = '#e0e0e0'
+                : cell.style.color = 'green';
+            cell.innerText = i === 0 ? j : (j === 0 ? i : i * j);
 
+            //або:
+            // if (i === 0) {
+            //     cell.innerText = `${j}`;
+            // } else if (j === 0) {
+            //     cell.innerText = `${i}`;
+            // } else {
+            //     cell.innerText = `${i * j}`;
+            // }
 
+            row.append(cell);
+            cell.onmouseover = function () {
+                cell.style.backgroundColor = `purple`;
+                cell.style.color = `white`;
+                cell.style.fontWeight = `bold`;
+
+            }
+            cell.onmouseout = function () {
+                cell.style.backgroundColor = i % 2 ? '#e0e0e0' : 'inherit';
+                cell.style.color = i % 2 ? 'inherit' : 'green';
+                cell.style.fontWeight = `inherit`;
+            }
+        }
+        table.append(row);
+    }
+    document.body.append(table);
+}
+
+//DOM: Highlight cross
+{
+    const table = document.createElement('table');
+    const cells = []; 
+
+    for (let i = 0; i < 10; i++) {
+        const row = document.createElement('tr');
+        cells[i] = [];
+
+        for (let j = 0; j < 10; j++) {
+            const cell = document.createElement('td');
+            cell.style.cssText = `
+                border: 1px solid grey; 
+                width: 50px; height: 50px; 
+                text-align: center; font-size: 20px; 
+                transition: background-color 0.4s ease-in`;
+            (i % 2)
+                ? cell.style.backgroundColor = '#e0e0e0'
+                : cell.style.color = 'green';
+            cell.innerText = i === 0 ? j : (j === 0 ? i : i * j);
+
+            row.append(cell);
+            cells[i][j] = cell;
+
+            cell.onmouseover = function () {
+                for (let c = 0; c < 10; c++) {
+                    cells[i][c].style.backgroundColor = 'purple';
+                    cells[i][c].style.color = 'white';
+                    cells[i][c].style.fontWeight = 'bold';
+                }
+                for (let r = 0; r < 10; r++) {
+                    cells[r][j].style.backgroundColor = 'purple';
+                    cells[r][j].style.color = 'white';
+                    cells[r][j].style.fontWeight = 'bold';
+                }
+            };
+
+            cell.onmouseout = function () {
+                for (let c = 0; c < 10; c++) {
+                    cells[i][c].style.backgroundColor = (i % 2 === 0) ? '#e0e0e0' : '';
+                    cells[i][c].style.color = (i % 2 === 0) ? 'green' : '';
+                    cells[i][c].style.fontWeight = '';
+                }
+                for (let r = 0; r < 10; r++) {
+                    cells[r][j].style.backgroundColor = (r % 2 === 0) ? '#e0e0e0' : '';
+                    cells[r][j].style.color = (r % 2 === 0) ? 'green' : '';
+                    cells[r][j].style.fontWeight = '';
+                }
+            };
+        }
+        table.append(row);
+    }
+    document.body.append(table);
+}
