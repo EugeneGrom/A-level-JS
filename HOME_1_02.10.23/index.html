@@ -14,25 +14,37 @@
         <fieldset>
             <legend>Form</legend>
             <div class="block">
-                <label for="login">Логін</label><input type='text' id="login" placeholder="Введіть логін" required/>
+                <label for="login">Логін</label><input type='text' id="login" placeholder="Введіть логін" required />
             </div>
             <div class="block">
-                <label for="pass">Пароль</label><input type='password' id="pass" placeholder="Введіть пароль" required/>
+                <label for="pass">Пароль</label><input type='password' id="pass" placeholder="Введіть пароль"
+                    required />
             </div>
             <div>
                 <input type="button" id="btn" value="LOGIN">
             </div>
         </fieldset>
     </form>
-    <div id="command">
-        <span>Good!</span>    
-    </div>
-    <script src="main.js"></script>
-    <script>
-        var login = document.querySelector('login');
-        var pass = document.querySelector('pass');
-
-    </script>
+    <div id="command"></div>
 </body>
+<script>
+    //Завдання на синій пояс
+    const credentials = {
+        login: 'admin',
+        password: 'qwerty',
+    };
+
+    btn.onclick = function() {
+        command.style.display = 'block';
+
+        if ((login.value === credentials.login) && (pass.value === credentials.password)) {
+            command.style.backgroundColor = 'green';
+            command.innerText = 'GOOD!';
+        } else {
+            command.style.backgroundColor = 'red';
+            command.innerText = 'BAD!!!'
+        }
+    }
+</script>
 
 </html>
