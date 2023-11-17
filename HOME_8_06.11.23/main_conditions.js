@@ -150,6 +150,44 @@ if (['red', 'black', 'blue', 'green'].includes(color)) {
     })
 }
 
-//
+//closure calc
+{
+    fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+        .then(data => {
+            const mainDiv = document.createElement('div');
+            mainDiv.id = 'mainDIV';
 
+            const objKeys = Object.keys(data.rates);
+            const objValues = Object.values(data.rates);
 
+            for (let i = 0; i < objKeys.length; i++) {
+                const divWrapper = document.createElement('div');
+                const res = document.createElement('span');
+
+                const button = document.createElement('button');
+                button.innerHTML = objKeys[i];
+
+                button.onclick = () => {
+                    let value = +prompt('Введіть суму, яку хочете конвертувати у USD:');
+
+                    if (isNaN(value) || value === null) {
+                        return `У вас помилка у написанні суми ${value}`;
+                    } else {
+
+                        let result = (value / objValues[i]).toFixed(2);
+                        res.innerHTML = ` Отримано ${result} ${data.base_code} за ${value} ${objKeys[i]};`
+                        divWrapper.appendChild(res);
+                    }
+                }
+                divWrapper.appendChild(button);
+                divWrapper.appendChild(res);
+
+                mainDiv.append(divWrapper);
+
+                const br = document.createElement('br');
+                mainDiv.appendChild(br);
+            }
+            document.body.appendChild(mainDiv);
+            console.log(data) // Вивчіть структуру, що отримується з сервера в консолі
+        })
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-level JS Homework 8 Conditions</title>
+</head>
+
+<body>
+    <form>
+        <select id="from"></select>
+        <select id="to"></select>
+        <div id="rate"></div>
+        <input type="number" id="amount" />
+        <div id="result"></div>
+    </form>
+    <br />
+    <br />
+    <form>
+        <select id="countries">
+            <option> -- -- -- -- -- -- -- -- </option>
+        </select>
+        <select id="cities">
+            <option> ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ </option>
+        </select>
+        <div id="choice"></div>
+    </form>
+</body>
+<script>
+    //closure calc 2
+    fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+        .then(data => {
+            const objKeys = Object.keys(data.rates);
+
+            for (let i = 0; i < objKeys.length; i++) {
+                const optionIN = document.createElement('option');
+                const optionOUT = document.createElement('option');
+                optionIN.innerHTML = `${objKeys[i]}`;
+                optionOUT.innerHTML = `${objKeys[i]}`;
+                from.append(optionIN);
+                to.append(optionOUT);
+            }
+
+            const defaultText = result.innerHTML = `Введіть суму, яку хочете конвертувати`;
+            to.onchange = from.onchange = amount.oninput = () => {
+                let currIN = data.rates[from.value];
+                let currOUT = data.rates[to.value];
+                let cross = (1 / currIN) / (1 / currOUT);
+                if (amount.value > 0) {
+                    const res = (amount.value * cross).toFixed(2);
+                    result.innerHTML = `Ви отримаєте ${res} ${to.value} за ${amount.value} ${from.value}`;
+                } else if (amount.value <= 0) {
+                    result.innerHTML = amount.value < 0
+                        ? `Ваше значення "${amount.value}" - менше нуля!`
+                        : defaultText;
+                }
+            }
+            console.log(data);
+        })
+</script>
+<script>
+    //countries and cities
+    fetch('https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.min.json').then(res => res.json())
+        .then(data => {
+            const countriesArr = Object.keys(data);
+            const citiesArr = Object.values(data);
+
+            for (let i = 0; i < countriesArr.length; i++) {
+                const country = document.createElement('option');
+                country.innerText = `${countriesArr[i]}`;
+                countries.append(country);
+            }
+            function updateChoiceText() {
+                choice.innerHTML = `${countries.value}: ${cities.value}`;
+            }
+
+            countries.onchange = () => {
+                const selectedCountry = countries.value;
+                cities.innerText = '';
+                updateChoiceText();
+
+                if (selectedCountry) {
+                    const citiesOfCountry = data[selectedCountry];
+                    for (const city of citiesOfCountry) {
+                        const item = document.createElement('option');
+                        item.innerText = `${city}`;
+                        cities.append(item);
+                    }
+                }
+            }
+
+            cities.onchange = updateChoiceText;
+            console.log(data);
+        })
+</script>
+
+</html>
