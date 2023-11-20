@@ -110,24 +110,24 @@
         };
         const setFullName = (newFullName) => {
             let tempArr = newFullName.split(' ');
-            
+
             for (let i = 0; i < tempArr.length; i++) {
                 if (tempArr[i][0] === tempArr[i][0].toUpperCase()) {
-                    (i === 0 && (surname = tempArr[i])) || 
-                    (i === 1 && (name = tempArr[i])) || 
-                    (i === 2 && (fatherName = tempArr[i]));
+                    (i === 0 && (surname = tempArr[i])) ||
+                        (i === 1 && (name = tempArr[i])) ||
+                        (i === 2 && (fatherName = tempArr[i]));
                 }
             }
         }
 
-        return { 
-            getName, 
-            getSurname, 
-            getFatherName, 
-            getAge, 
-            getFullName, 
-            setName, 
-            setSurname, 
+        return {
+            getName,
+            getSurname,
+            getFatherName,
+            getAge,
+            getFullName,
+            setName,
+            setSurname,
             setFatherName,
             setAge,
             setFullName
@@ -144,6 +144,34 @@
     console.log(b.getFatherName()) //Миколаївна
 }
 
+//createPersonClosureDestruct
+//Зробіть набір параметрів функції попереднього завдання об'єктом, використовуйте деструктуризацію для вилучення параметрів.
+//Вкажіть значення за замовчуванням
+//const a = createPersonClosureDestruct(createPerson("Вася Пупкін"))
+//const b = createPersonClosureDestruct({name: 'Миколай', age: 75})
+{
+
+    const createPerson = function (name, surname) {
+        function getFullName() {
+            return `${name} ${surname} ${fatherName || ''}`;
+        }
+        return { name, surname, getFullName };
+    };
+
+    const createPersonClosureDestruct = function ({ name = 'Ізабелла', surname = 'Бананова', fatherName = 'Ананасовна', age = 86 }) {
+        function getFullName() {
+            return `${name} ${surname} ${fatherName}`;
+        }
+        return { name, surname, getFullName, age };
+    }
+
+    const a = createPersonClosureDestruct(createPerson("Вася Пупкін"))
+    console.log(a)
+    const b = createPersonClosureDestruct({ name: 'Миколай', age: 75 })
+    console.log(b)
+
+}
+
 //isSorted, TEST isSorted
 //Напишіть функцію isSorted, яка приймає набір параметрів будь-якого розміру, 
 //та повертає true, коли всі параметри - це числа, і кожeн з них більше за попередній параметр.
@@ -154,13 +182,13 @@
             ? arrayOfParam.push(parameter)
             : arrayOfParam.push(+parameter);
     }
-    console.log(arrayOfParam)
+    console.log(arrayOfParam);
 
     function isSorted(arrOfParam) {
 
         for (let i = 0; i < arrOfParam.length; i++) {
             if (typeof arrOfParam[i] === 'number') {
-                if (i === 0) { continue; }
+                if (i === 0) { continue; };
                 if (arrOfParam[i] > arrOfParam[i - 1]) {
                     continue;
                 } else {
@@ -173,4 +201,27 @@
         return `Вітаю! Всі ваші параметри - числа, перелічені за зростанням!`;
     }
     isSorted(arrayOfParam);
+}
+
+//personForm
+//Напишіть функцію, яка приймає два параметри: батьківський DOM-елемент та об'єкт-результат роботи 
+//createPersonClosure (або createPersonClosureDestruct, результати в обох цих функцій однакові) 
+//і малює форму, яка дозволяє редагувати дані про персону.
+//На початку роботи personForm створює 5 полів введення (ім'я, прізвище, по батькові, вік, ПІБ) у батьківському DOM-елементі 
+//та встановлює туди значення, прочитані за допомогою getName , getSurname і т.д.
+//Події oninput в будь-якому з полів введення потрібно запускати відповідний set..... 
+//Наприклад, при зміні поля введення імені повинен запускатися setName(якийсь инпут.value). 
+//Функції set... повертають значення, і його потрібно занести назад до input. 
+//Таким чином, у полях введення неможливо буде ввести некоректні значення (наприклад вік не зможе вийти за межі 0-100 років)
+
+const b = createPersonClosure("Ганна", "Іванова")
+b.setAge(15)
+b.setFullName("Петрова Ганна Миколаївна")
+
+function personForm(parent, person) {
+    //настворювати інпутів (5 штук)
+    //додавати їх у parent
+    //Навісити кожному з них обробник події типу nameInput.oninput = () => {
+    //Тут намагаємося міняти person використовуючи person.setName. Текст в інпуті має стати таким, що поверне setName
+    //}
 }
