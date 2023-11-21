@@ -88,23 +88,23 @@
 
         const setName = (newName) => {
             (newName[0] === newName[0].toUpperCase())
-                ? newName
+                ? name = newName
                 : name;
         };
         const setSurname = (newSurname) => {
             (newSurname[0] === newSurname[0].toUpperCase())
-                ? newSurname
+                ? name = newSurname
                 : name;
         };
         const setFatherName = (newFatherName) => {
             (newFatherName[0] === newFatherName[0].toUpperCase())
-                ? newFatherName
+                ? name = newFatherName
                 : fatherName;
         };;
         const setAge = (newAge) => {
             (typeof newAge === 'number')
                 ? (newAge >= 0 && newAge <= 100)
-                    ? newAge
+                    ? age = newAge
                     : age
                 : age;
         };
@@ -147,10 +147,7 @@
 //createPersonClosureDestruct
 //Зробіть набір параметрів функції попереднього завдання об'єктом, використовуйте деструктуризацію для вилучення параметрів.
 //Вкажіть значення за замовчуванням
-//const a = createPersonClosureDestruct(createPerson("Вася Пупкін"))
-//const b = createPersonClosureDestruct({name: 'Миколай', age: 75})
 {
-
     const createPerson = function (name, surname) {
         function getFullName() {
             return `${name} ${surname} ${fatherName || ''}`;
@@ -160,16 +157,16 @@
 
     const createPersonClosureDestruct = function ({ name = 'Ізабелла', surname = 'Бананова', fatherName = 'Ананасовна', age = 86 }) {
         function getFullName() {
-            return `${name} ${surname} ${fatherName}`;
+            return `${name} ${surname} ${fatherName || ''}`;
         }
-        return { name, surname, getFullName, age };
+        return { name, surname, age, getFullName };
     }
 
-    const a = createPersonClosureDestruct(createPerson("Вася Пупкін"))
-    console.log(a)
-    const b = createPersonClosureDestruct({ name: 'Миколай', age: 75 })
-    console.log(b)
-
+    const a = createPersonClosureDestruct(createPerson("Вася", "Пупкін"));
+    console.log(a);
+    const b = createPersonClosureDestruct({ name: 'Миколай', age: 75 });
+    console.log(b);
+    console.log(b.getFullName());
 }
 
 //isSorted, TEST isSorted
@@ -204,24 +201,129 @@
 }
 
 //personForm
-//Напишіть функцію, яка приймає два параметри: батьківський DOM-елемент та об'єкт-результат роботи 
-//createPersonClosure (або createPersonClosureDestruct, результати в обох цих функцій однакові) 
-//і малює форму, яка дозволяє редагувати дані про персону.
-//На початку роботи personForm створює 5 полів введення (ім'я, прізвище, по батькові, вік, ПІБ) у батьківському DOM-елементі 
-//та встановлює туди значення, прочитані за допомогою getName , getSurname і т.д.
-//Події oninput в будь-якому з полів введення потрібно запускати відповідний set..... 
-//Наприклад, при зміні поля введення імені повинен запускатися setName(якийсь инпут.value). 
-//Функції set... повертають значення, і його потрібно занести назад до input. 
-//Таким чином, у полях введення неможливо буде ввести некоректні значення (наприклад вік не зможе вийти за межі 0-100 років)
 
-const b = createPersonClosure("Ганна", "Іванова")
-b.setAge(15)
-b.setFullName("Петрова Ганна Миколаївна")
+{
+    const createPersonClosure = function (name, surname) {
+        let age, fatherName;
+        const getName = () => name || '';
+        const getSurname = () => surname || '';
+        const getFatherName = () => fatherName || '';
+        const getAge = () => age || '';
+        const getFullName = () => `${getSurname()} ${getName()} ${getFatherName()}` || '';
 
-function personForm(parent, person) {
-    //настворювати інпутів (5 штук)
-    //додавати їх у parent
-    //Навісити кожному з них обробник події типу nameInput.oninput = () => {
-    //Тут намагаємося міняти person використовуючи person.setName. Текст в інпуті має стати таким, що поверне setName
-    //}
+        const setName = (newName) => {
+            (newName && typeof newName === 'string' && newName.length > 0 && newName[0] === newName[0].toUpperCase())
+                ? name = newName
+                : name;
+            return name;
+        };
+        const setSurname = (newSurname) => {
+            (newSurname && typeof newSurname === 'string' && newSurname.length > 0 && newSurname[0] === newSurname[0].toUpperCase())
+                ? surname = newSurname
+                : surname;
+            return surname;
+        };
+        const setFatherName = (newFatherName) => {
+            (newFatherName && typeof newFatherName === 'string' && newFatherName.length > 0 && newFatherName[0] === newFatherName[0].toUpperCase())
+                ? fatherName = newFatherName
+                : fatherName;
+            return fatherName;
+        };
+        const setAge = (newAge) => {
+            (newAge && typeof newAge === 'number' && newAge.toString.length > 0)
+                ? (newAge >= 0 && newAge <= 100)
+                    ? age = newAge
+                    : age
+                : age;
+            return age;
+        };
+        const setFullName = (newFullName) => {
+            if (newFullName && typeof newFullName === 'string' && newFullName.length > 0) {
+                let tempArr = newFullName.split(' ');
+
+                for (let i = 0; i < tempArr.length; i++) {
+                    if (tempArr[i][0] === tempArr[i][0].toUpperCase()) {
+                        (i === 0 && (surname = tempArr[i])) ||
+                            (i === 1 && (name = tempArr[i])) ||
+                            (i === 2 && (fatherName = tempArr[i]));
+                    }
+                }
+            }
+            return surname, name, fatherName;
+        }
+
+        return {
+            getName,
+            getSurname,
+            getFatherName,
+            getAge,
+            getFullName,
+            setName,
+            setSurname,
+            setFatherName,
+            setAge,
+            setFullName
+        };
+    };
+
+    const b = createPersonClosure("Ганна", "Іванова");
+    b.setAge(65);
+    b.setFullName("Петрова Ганна Миколаївна");
+
+    function personForm(parent, person) {
+        const arrs = ['name', 'surname', 'fatherName', 'age', 'fullName'];
+        const arrGet = [
+            person.getName,
+            person.getSurname,
+            person.getFatherName,
+            person.getAge,
+            person.getFullName
+        ];
+
+        const arrSet = [
+            person.setName,
+            person.setSurname,
+            person.setFatherName,
+            person.setAge,
+            person.setFullName
+        ];
+
+        for (let i = 0; i < 5; i++) {
+            const newInput = document.createElement('input');
+            newInput.setAttribute('placeholder', `${arrs[i]}`);
+            newInput.value = arrGet[i]();
+            parent.append(newInput);
+
+            const br = document.createElement('br');
+            parent.append(br);
+
+            newInput.oninput = () => {
+                let lastValue = arrGet[i]();
+
+                if (arrs[i].includes('age')) {
+                    const inputValue = parseInt(newInput.value);
+
+                    if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
+                        lastValue = arrSet[i](inputValue);
+                        newInput.innerText = lastValue;
+                    } else {
+                        console.log('WRONG VALUE!!!!')
+                        newInput.value = lastValue;
+                    }
+                } else {
+                    const inputValue = newInput.value;
+                    if (inputValue !== undefined && inputValue.length > 0  && inputValue[0] === inputValue[0].toString()) {
+                        lastValue = arrSet[i](newInput.value);
+                        newInput.innerText = lastValue;
+                        console.log('STRING YES!!!!')
+                    } else {
+                        console.log('STRING NO!!!!')
+                        newInput.value = lastValue;
+                    }
+                }
+            }
+        }
+    }
+    const parend = document.body;
+    personForm(parend, b);
 }
