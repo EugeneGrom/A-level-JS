@@ -208,7 +208,7 @@
         const getName = () => name || '';
         const getSurname = () => surname || '';
         const getFatherName = () => fatherName || '';
-        const getAge = () => age || '';
+        const getAge = () => age || 0;
         const getFullName = () => `${getSurname()} ${getName()} ${getFatherName()}` || '';
 
         const setName = (newName) => {
@@ -230,7 +230,7 @@
             return fatherName;
         };
         const setAge = (newAge) => {
-            (newAge && typeof newAge === 'number' && newAge.toString.length > 0)
+            (newAge && typeof newAge === 'number' && newAge.toString().length > 0)
                 ? (newAge >= 0 && newAge <= 100)
                     ? age = newAge
                     : age
@@ -271,49 +271,46 @@
     b.setFullName("Петрова Ганна Миколаївна");
 
     function personForm(parent, person) {
-        const arrs = ['name', 'surname', 'fatherName', 'age', 'fullName'];
-        const arrGet = [
-            person.getName,
-            person.getSurname,
-            person.getFatherName,
-            person.getAge,
-            person.getFullName
-        ];
+        const objKeys = [];
 
-        const arrSet = [
-            person.setName,
-            person.setSurname,
-            person.setFatherName,
-            person.setAge,
-            person.setFullName
-        ];
+        for (const key in person) {
+            let elem = key.slice(3);
+            elem = elem[0].toLowerCase() + elem.slice(1);
+            if (!objKeys.includes(elem)) {
+                objKeys.push(elem);
+            }
+        }
+        console.log(objKeys);
+        // arrs.forEach(elem => {
+        //     const setMethod = `set${elem[0].toUpperCase}${elem.slice(1)}`;
+        //     const getMethod = `get${elem[0].toUpperCase}${elem.slice(1)}`;
+        //     person[setMethod](); 
+        //     person[getMethod]();
+        // })
 
-        for (let i = 0; i < 5; i++) {
+        objKeys.forEach(elem => {
+            const getMethod = `get${elem[0].toUpperCase()}${elem.slice(1)}`;
+            const setMethod = `set${elem[0].toUpperCase()}${elem.slice(1)}`;
+
             const newInput = document.createElement('input');
-            newInput.setAttribute('placeholder', `${arrs[i]}`);
-            newInput.value = arrGet[i]();
+            newInput.setAttribute('placeholder', `${elem}`);
+            newInput.value = person[getMethod]();
             parent.append(newInput);
 
             const br = document.createElement('br');
             parent.append(br);
 
             newInput.oninput = () => {
-                let lastValue = arrGet[i]();
+                let lastValue = person[getMethod]();
 
-                if (arrs[i].includes('age')) {
+                if (elem.includes('age')) {
                     const inputValue = parseInt(newInput.value);
-
-                    if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
-                        lastValue = arrSet[i](inputValue);
-                        newInput.innerText = lastValue;
-                    } else {
-                        console.log('WRONG VALUE!!!!')
-                        newInput.value = lastValue;
-                    }
+                    lastValue = person[setMethod](inputValue);
+                    newInput.value = lastValue;
                 } else {
                     const inputValue = newInput.value;
-                    if (inputValue !== undefined && inputValue.length > 0  && inputValue[0] === inputValue[0].toString()) {
-                        lastValue = arrSet[i](newInput.value);
+                    if (inputValue !== undefined && inputValue.length > 0 && inputValue[0] === inputValue[0].toString()) {
+                        lastValue = person[setMethod](newInput.value);
                         newInput.innerText = lastValue;
                         console.log('STRING YES!!!!')
                     } else {
@@ -322,8 +319,175 @@
                     }
                 }
             }
-        }
+        })
     }
     const parend = document.body;
     personForm(parend, b);
+}
+
+//getSetForm
+{
+    const createPersonClosure = function (name, surname) {
+        let age, fatherName;
+        const getName = () => name || '';
+        const getSurname = () => surname || '';
+        const getFatherName = () => fatherName || '';
+        const getAge = () => age || 0;
+        const getFullName = () => `${getSurname()} ${getName()} ${getFatherName()}` || '';
+
+        const regExp = /^[A-Za-zА-Яа-я]+$/;
+
+        const setName = (newName) => {
+            (newName && typeof newName === 'string' && newName[0] === newName[0].toUpperCase() && regExp.test(newName))
+                ? name = newName
+                : name;
+            return name;
+        };
+        const setSurname = (newSurname) => {
+            (newSurname && typeof newSurname === 'string' && newSurname[0] === newSurname[0].toUpperCase() && regExp.test(newSurname))
+                ? surname = newSurname
+                : surname;
+            return surname;
+        };
+        const setFatherName = (newFatherName) => {
+            (newFatherName && typeof newFatherName === 'string' && newFatherName[0] === newFatherName[0].toUpperCase() && regExp.test(newFatherName))
+                ? fatherName = newFatherName
+                : fatherName;
+            return fatherName;
+        };
+        const setAge = (newAge) => {
+            (!isNaN(newAge))
+                ? (newAge >= 0 && newAge <= 100)
+                    ? age = newAge
+                    : age
+                : console.log('age');
+            return age;
+        };
+        const setFullName = (newFullName) => {
+            if (newFullName && typeof newFullName === 'string' && newFullName.length > 0) {
+                let tempArr = newFullName.split(' ');
+
+                for (let i = 0; i < tempArr.length; i++) {
+                    if (tempArr[i][0] === tempArr[i][0].toUpperCase()) {
+                        (i === 0 && (surname = tempArr[i])) ||
+                            (i === 1 && (name = tempArr[i])) ||
+                            (i === 2 && (fatherName = tempArr[i]));
+                    }
+                }
+            }
+            return surname, name, fatherName;
+        }
+
+        return {
+            getName,
+            getSurname,
+            getFatherName,
+            getAge,
+            getFullName,
+            setName,
+            setSurname,
+            setFatherName,
+            setAge,
+            setFullName
+        };
+    };
+
+    let car;
+    {
+        let brand = 'BMW', model = 'X5', volume = 2.4
+        car = {
+            getBrand() {
+                return brand
+            },
+            setBrand(newBrand) {
+                (newBrand && typeof newBrand === 'string')
+                    ? brand = newBrand
+                    : brand;
+            },
+
+            getModel() {
+                return model
+            },
+            setModel(newModel) {
+                (newModel && typeof newModel === 'string')
+                    ? model = newModel
+                    : model;
+            },
+
+            getVolume() {
+                return volume
+            },
+            setVolume(newVolume) {
+                newVolume = +newVolume;
+                (newVolume && newVolume > 0 && newVolume < 20)
+                    ? volume = newVolume
+                    : volume;
+            },
+
+            getTax() {
+                return volume * 100
+            }
+        }
+    }
+
+
+    function getSetForm(parent, getSet) {
+        const inputs = {} //реєстр
+
+        const updateInputs = () => {
+            for (const key in inputs) {
+                const methodGet = `get${key}`;
+                if (getSet.hasOwnProperty(methodGet)) {
+                    inputs[key].value = getSet[methodGet]();
+                }
+            }
+        }
+
+        for (const getSetName in getSet) {
+            const getOrSet = getSetName.slice(0, 3);//перші три літери змінної getSetName. Також можна використовувати прапор isGet, який дорівнюватиме true або false
+            const fieldName = getSetName.slice(3);// Інші літери getSetName - типу "Name" або "FullName"
+            const setKey = 'set' + fieldName;
+            const getKey = 'get' + fieldName;
+
+            if (getOrSet === 'get') {
+                const newInput = document.createElement('input');
+
+                newInput.setAttribute('placeholder', `${fieldName}`);
+                const newVal = getSet[getKey]();
+                if (typeof newVal === 'number') {
+                    newInput.setAttribute('type', 'number');
+                    newInput.value = newVal;
+                } else if (typeof newVal === (true || false)){
+                    newInput.setAttribute('type', 'checkbox');
+                    newInput.checked = newVal;
+                } else if (typeof newVal === 'string') {
+                    newInput.value = newVal;
+                }
+                inputs[fieldName] = newInput;
+
+                if (!getSet.hasOwnProperty(setKey)) {
+                    newInput.setAttribute('disabled', 'disabled');
+                }
+                parent.append(newInput);
+
+                newInput.addEventListener('input', (event) => {
+                    let value = event.target.value;
+                    if (newInput.type === 'number') {
+                        getSet[setKey](+value); // Викликаємо відповідний метод set... зі значенням зміненого поля
+                    } else if (newInput.type === 'checkbox') {
+                        getSet[setKey](event.target.checked); // Викликаємо відповідний метод set... зі значенням зміненого поля
+                    } else if (newInput.type === 'text') {
+                        getSet[setKey](value); // Викликаємо відповідний метод set... зі значенням зміненого поля
+                    }
+                    updateInputs(); // Оновлюємо всі інші поля
+                });
+            }
+            const br = document.createElement('br');
+            parent.append(br);
+        }
+        console.log(inputs);
+        updateInputs()
+    }
+    getSetForm(document.body, car);
+    getSetForm(document.body, createPersonClosure('Анон', "Анонов"))
 }
