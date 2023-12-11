@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-level JS Homework 12 Redux</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        body .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            justify-content: center;
+            border: 20px ridge green;
+            padding: 10px 20px 20px;
+            background: whitesmoke;
+        }
+
+        .container ul li {
+            font-size: 25px;
+        }
+
+        #buy {
+            font-size: x-large;
+            background: linear-gradient(to right, green, black);
+            color: whitesmoke;
+            border-radius: 20px;
+            transition: all 0.5s linear;
+        }
+
+        #buy:hover {
+            background: white;
+            color: green;
+        }
+
+        input[type='number'],
+        select {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Емулятор кіоска</h1>
+        <h2>Вітрина товару:</h2>
+        <ul class="list">
+            <!-- <li class="goods">Сіги: 100</li>
+            <li class="goods">Пиво: 100</li>
+            <li class="goods">Чіпси: 100</li> -->
+        </ul>
+        <br />
+
+        <label for="sho">Що ви хочете купити?</label>
+        <select id="sho"></select>
+        <br />
+        <label for="skoka">Скільки одиниць ви хочете взяти за раз?</label>
+        <input type="number" id="skoka" />
+        <br />
+        <label>Внесіть кошти за покупку, грн.:</label>
+        <input type="number" id="money" />
+        <br />
+        <!-- <ul id="kasa" style="list-style-type: none;">
+            <span style="font-size: 30px;">Каса:</span>
+            <li>12</li>
+            <li>23</li>
+        </ul> -->
+        <button id='buy' style="text-transform: uppercase;">Купити</button>
+    </div>
+</body>
+<script src="main_redux.js"></script>
+
+</html>
