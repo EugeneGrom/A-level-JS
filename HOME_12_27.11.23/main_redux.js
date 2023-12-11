@@ -76,7 +76,7 @@ for (const key in baseState) {
 }
 
 const kiosk = createStore(reducer);
-// const unsubscribe = kiosk.subscribe(() => {
+
 function updateStock() {
     const list = document.querySelector('.list');
     list.innerHTML = '';
@@ -89,27 +89,20 @@ function updateStock() {
             : `${commodity}: ${stateNow[commodity]}`
         list.appendChild(li);
     };
-    const cash = stateNow['каса'];
-    document.title = `Касса: ${cash} грн`;
+    // const cash = stateNow['каса'];
+    // document.title = `Каса: ${cash} грн`;
 }
-
 const unsubscribe = kiosk.subscribe(updateStock);
 
+function updateTitle() {
+    const stateNow = kiosk.getState();
+    const cash = stateNow['каса'];
+    document.title = `Каса: ${cash} грн`;
+}
+const unsubscribeTitle = kiosk.subscribe(updateTitle);
 // document.addEventListener('keyup', event => {
 //     if (event.code === 'Enter') {
-//         const commodity = document.getElementById('sho');
-//         const quantityInput = document.getElementById('skoka');
-//         const selectedCommodity = commodity.value;
-//         const quantity = quantityInput.value;
-
-//         const kasaList = document.getElementById('kasa');
-//         if (selectedCommodity && quantity) {
-//             const li = document.createElement('li')
-//             li.textContent = `${selectedCommodity}: ${quantity}`
-//             kasaList.append(li);
-//         }
-//         commodity.value = ''; // Очищення полів після додавання
-//         quantityInput.value = '';
+//          ...
 //     }
 // })
 
@@ -125,11 +118,9 @@ document.getElementById('buy').addEventListener('click', () => {
 
     kiosk.dispatch({ type: 'КУПИТИ', ЩО: selectedCommodity, СКОКА: quantity, КОШТИ: costsValue });
 
-    quantity = '';
-    costsValue = '';
+    quantityInput.value = '';
+    costs.value = '';
 });
-
-updateStock();
 
 
 
