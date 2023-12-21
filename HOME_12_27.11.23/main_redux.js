@@ -61,7 +61,7 @@ for (const position in baseState) {
     const li = document.createElement('li');
 
     li.textContent = (position !== 'каса')
-        ? `${position}: ${baseState[position].howMuch}`
+        ? `${position}: залишок ${baseState[position].howMuch} од., ціна: ${baseState[position].priceItem} грн.`
         : `${position}: ${baseState[position]}`;
     menu.appendChild(li);
 }
@@ -85,7 +85,7 @@ function updateStock() {
     for (const commodity in stateNow) {
         const li = document.createElement('li');
         li.textContent = (commodity !== 'каса')
-            ? `${commodity}: ${stateNow[commodity].howMuch}`
+            ? `${commodity}: залишок ${stateNow[commodity].howMuch}од., ціна: ${stateNow[commodity].priceItem} грн.`
             : `${commodity}: ${stateNow[commodity]}`
         list.appendChild(li);
     };
