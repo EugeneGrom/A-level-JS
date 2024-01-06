@@ -189,6 +189,30 @@ function getElementById(idToFind) {
         for (const child of parent.children) {
             if (child.id === idToFind) {
                 foundElement = child;
+                console.log('ID знайдено');
+                throw foundElement;
+            } else {
+                walker(child);
+            }
+        }
+    }
+    try {
+        walker();
+        console.error('error', error); // Выбрасываем ошибку, если элемент не был найден
+    } catch (result) {
+        return result = result instanceof Error
+            ? console.error('ID was not found')
+            : console.log('Found Element: ', result);
+    }
+}
+
+/*
+function getElementById(idToFind) {
+    let foundElement;
+    function walker(parent = document.body) {
+        for (const child of parent.children) {
+            if (child.id === idToFind) {
+                foundElement = child;
                 break;
             } else {
                 walker(child);
@@ -198,3 +222,4 @@ function getElementById(idToFind) {
     walker();
     return foundElement;
 }
+*/ 
