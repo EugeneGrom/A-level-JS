@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic lights</title>
+
+</head>
+<style type="text/css">
+
+    .trafficLights {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100px;
+        height: 300px;
+        background-color: black;
+        border-radius: 15px;
+    }
+
+    .pedestrianContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .pedestrianLights {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100px;
+        height: 200px;
+        border: 1px solid black;
+        border-radius: 15px;
+    }
+    #btnForPedestrian {
+        width: 130px;
+        text-align: right;
+        font-size: 20px;
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .yellow {
+        background-color: yellow;
+    }
+
+    .green {
+        background-color: green;
+    }
+
+    .round {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        /* background-color: white; */
+    }
+</style>
+
+<body>
+    <div class="trafficLights">
+        <div class="round" id="red"></div>
+        <div class="round" id="yellow"></div>
+        <div class="round" id="green"></div>
+    </div>
+    <br />
+    <div class="pedestrianContainer">
+        <div class="pedestrianLights">
+            <div class="round" id="red2"></div>
+            <div class="round" id="green2"></div>
+        </div>
+        <br />
+        <div>
+            <button id='btnForPedestrian'>БАТТОН!!!</button>
+        </div>
+    </div>
+    <script src="main_rest_graphGL.js"></script>
+</body>
+
+</html>
