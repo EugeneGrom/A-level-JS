@@ -141,12 +141,13 @@ async function gql(endpoint, query, variables) {
 
         if (!response.ok) {
             throw new Error('Response error, status ' + response.status);
+        } else {
+            return response.json();
         }
-
-        const result = await response.json().then(result => {
-            console.log('Response of GraphQL request: ', result);
-        })
-        return result;
+        // const result = await response.json().then(result => {
+        //     console.log('Response of GraphQL request: ', result);
+        // })
+        // return result;
     } catch (error) {
         console.error('Error', error);
         return Promise.reject(error);
