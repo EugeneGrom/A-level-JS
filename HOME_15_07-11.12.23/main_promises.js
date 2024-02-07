@@ -218,3 +218,124 @@ function promptPromise(text) {
 
 promptPromise("Як тебе звуть?").then(name => console.log(`Тебе звуть ${name}`),
     () => console.log('Ну навіщо морозитися, нормально ж спілкувалися'))
+
+//Promisify: LoginForm
+/*
+Проміссифікуйте конструктор LoginForm. 
+У промісифіковану функцію передається DOM-елемент - батько для форми, 
+У колбеку, призначеному для отримання логіна та пароля в момент натискання кнопки "Login...", 
+який ви призначаєте в об'єкті LoginForm, зарезолвіт проміс. 
+
+Результатом промісу має бути об'єкт із ключами login та password, 
+ключі повинні містити значення полів введення.
+*/
+function Password(parent, open) {
+
+    this.passElem = document.createElement('input');
+    this.passElem.setAttribute('type', open ? 'text' : 'password');
+    this.passElem.setAttribute('placeholder', 'Введіть пароль...');
+    this.checkBox = document.createElement('input');
+    this.checkBox.setAttribute('type', 'checkbox');
+    this.checkBox.checked = open;
+
+    this.getValue = function () {
+        return this.passElem.value
+    }
+    this.setValue = function (value) {
+        this.passElem.value = value
+    }
+
+    this.getOpen = function () {
+        return this.passElem.type === 'text';
+    }
+    this.setOpen = function (isOpen) {
+        this.passElem.type = isOpen ? 'text' : 'password';
+    };
+    this.setStyle = function (addedStyles) {
+        Object.assign(this.passElem.style, addedStyles);
+    };
+
+    this.checkBox.addEventListener('change', () => {
+        this.passElem.setAttribute('type', this.checkBox.checked ? 'text' : 'password')
+        if (this.onOpenChange) {
+            this.onOpenChange(this.checkBox.checked);
+        }
+    })
+    this.passElem.addEventListener('input', () => {
+        //умова, при якій показуємо у консолі змінений пароль, якщо він відкритий
+        if (this.onChange && this.checkBox.checked) {
+            this.onChange(this.passElem.value);
+        }
+    })
+
+    parent.appendChild(this.passElem);
+    parent.appendChild(this.checkBox);
+}
+
+function LoginForm(parent) {
+    return new Promise(resolve => {
+        const loginElem = document.createElement('input');
+        loginElem.type = 'text';
+        loginElem.placeholder = 'Введіть логін...'
+        parent.appendChild(loginElem);
+
+        const password = new Password(parent, true);
+
+        password.onChange = (data) => {
+            console.log(`Пароль: ${data}`)
+        }
+
+        const submitButton = document.createElement('button');
+        submitButton.innerText = 'Submit';
+        submitButton.setAttribute('disabled', 'true');
+        parent.appendChild(submitButton);
+
+        loginElem.addEventListener('input', () => {
+            if (this.onChange) {
+                this.onChange(loginElem.value);
+            }
+        });
+
+        this.submitFunction = function () {
+            loginElem.addEventListener('input', () => {
+                submitButton.disabled = (loginElem.value == '' || password.getValue() === '');
+            });
+            password.passElem.addEventListener('input', () => {
+                submitButton.disabled = (loginElem.value == '' || password.getValue() === '');
+            });
+        };
+
+        submitButton.addEventListener('click', () => {
+            const result = {
+                login: loginElem.value,
+                password: password.getValue()
+            };
+            resolve(result);
+
+            loginElem.value = '';
+            password.setValue('');
+        });
+
+        const submitFunction = () => {
+            loginElem.addEventListener('input', () => {
+                submitButton.disabled = (loginElem.value == '' || password.getValue() === '');
+            });
+            password.passElem.addEventListener('input', () => {
+                submitButton.disabled = (loginElem.value == '' || password.getValue() === '');
+            });
+        };
+
+        submitFunction();
+    });
+}
+
+function loginPromise(parent) {
+    return new Promise(resolve => {
+        const form = new LoginForm(parent);
+        form.then((result) => {
+            resolve(result);
+        });
+    });
+}
+
+loginPromise(document.body).then(({ login, password }) => console.log(`Ви ввели ${login} та ${password}`))
