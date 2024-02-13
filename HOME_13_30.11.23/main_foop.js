@@ -57,9 +57,14 @@
 //Соответственно методы subscribe, dispatch и getState должны быть объявлены внутри функции-конструктора 
 //и не могут быть в прототипе. Проверьте переделанный конструктор на вашем ДЗ по ларьку;
 function Store(reducer) {
-    this.state = reducer(undefined, {}) //стартова ініціалізація стану, запуск редьюсера со state === undefined
-    this.cbs = [];
-    this.reducer = reducer;
+    // const store = (function () {
+    //     let state = reducer(undefined, {})
+    //     const cbs = [];
+    //     return (state, cbs);
+    // })
+    this.state = () => reducer(undefined, {}) //стартова ініціалізація стану, запуск редьюсера со state === undefined
+    this.cbs = () => [];
+    this.reducer = () => reducer;
 
     this.getState = function () {
         return this.state;
@@ -98,7 +103,6 @@ function Store(reducer) {
 Для Password Verify додайте, також, метод setStyle, щоби мати можливiсть задати стиль input не втручаючись в код Password
 */
 function Password(parent, open) {
-
     this.passElem = document.createElement('input');
     this.passElem.setAttribute('type', open ? 'text' : 'password');
     this.passElem.setAttribute('placeholder', 'Введіть пароль...');
@@ -118,6 +122,7 @@ function Password(parent, open) {
     }
     this.setOpen = function (isOpen) {
         this.passElem.type = isOpen ? 'text' : 'password';
+        this.checkBox.checked = isOpen;
     };
     this.setStyle = function (addedStyles) {
         Object.assign(this.passElem.style, addedStyles);
@@ -138,7 +143,6 @@ function Password(parent, open) {
 
     parent.appendChild(this.passElem);
     parent.appendChild(this.checkBox);
-
 }
 
 let p = new Password(document.body, true)
@@ -286,6 +290,7 @@ function Password(parent, open) {
     }
     this.setOpen = function (isOpen) {
         this.passElem.type = isOpen ? 'text' : 'password';
+        this.checkBox.checked = isOpen;
     };
     this.setStyle = function (addedStyles) {
         Object.assign(this.passElem.style, addedStyles);
@@ -313,24 +318,30 @@ function PasswordVerify(parent, open) {
     const self = this;
 
     this.pass1 = new Password(parent, open);
-    open === false && (this.pass2 = new Password(parent, false));
+    const pass2 = document.createElement('input');
+    pass2.setAttribute('type', 'password');
+    pass2.setAttribute('placeholder', 'Підтвердіть пароль');
+    pass2.style.visibility = open ? 'hidden' : 'visible';
+
+    open === false && parent.appendChild(pass2);
 
     function handleInputChange() {
-        if (self.pass1.passElem.value !== self.pass2.passElem.value) {
+        if (self.pass1.passElem.value !== pass2.value) {
             self.pass1.passElem.style.cssText = 'color: red; border: 1px solid red;';
-            self.pass2.passElem.style.cssText = 'color: red; border: 1px solid red;'
+            pass2.style.cssText = 'color: red; border: 1px solid red;';
         } else {
             self.pass1.passElem.style.cssText = '';
-            self.pass2.passElem.style.cssText = '';
+            pass2.style.cssText = '';
         }
     }
+
     this.pass1.passElem.addEventListener('input', handleInputChange);
-    this.pass2.passElem.addEventListener('input', handleInputChange);
+    pass2.addEventListener('input', handleInputChange);
 
     this.pass1.onOpenChange = (isChecked) => {
         isChecked
-            ? (this.pass2.passElem.style.display = 'none', this.pass2.checkBox.style.display = 'none')
-            : (this.pass2.passElem.style.display = 'inline-block', this.pass2.checkBox.style.display = 'inline-block'); 
+            ? parent.removeChild(pass2)
+            : parent.appendChild(pass2);
     }
 }
 
